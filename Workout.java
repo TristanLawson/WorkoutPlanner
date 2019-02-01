@@ -1,11 +1,17 @@
 // Class Declaration
 public class Workout {
     // Instance Variables
-	int[] muscles = new int[13];
+	private int hist = 10;
+	private String name;
+	private int[] muscles = new int[13];
+	private int[][] reps = new int[hist][2];
+	private int[] weight = new int[hist];
+	private int[][] date = new int[hist][3];
+	private int counter;
 	
   
-    // method 1: muscle name index
-	public String muscleName(int number) {
+    // method 1: input index, return name
+ 	public String muscleIndex(int number) {
 		String name;
 		switch(number) {
 		case 0: name = "upper back";
@@ -41,61 +47,50 @@ public class Workout {
 	}
 	
 	// method 2: print muscles used in workout
-    public boolean getInfo() {
+    public void getInfo() {
     	int counter = 0;
-    	int one, two;
-    	for (one=1; one<3; one++) {
-    		
-    		switch(one) {
-    		case 1: System.out.println("Primary muscles used:\t");
+    	int x, y;
+    	System.out.println(name);
+    	for (x=1; x<3; x++) {
+    		switch(x) {
+    		case 1: System.out.println("\tPrimary muscles used:\t");
     		break;
-    		case 2: System.out.println("Secondary muscles used:\t");
+    		case 2: System.out.println("\tSecondary muscles used:\t");
     		break;
     		}
-
-    		for (two=0; two<13; two++) {
-    			if (muscles[two] == one) {
-    				System.out.println("\t"+muscleName(two));
+    		for (y=0; y<13; y++) {
+    			if (muscles[y] == x) {
+    				System.out.println("\t\t"+muscleIndex(y));
     				counter++;
     			}
     		}
-    		if (counter == 0) System.out.println("\tnone");
+    		if (counter == 0) System.out.println("\t\tnone");
     		counter = 0;
     	}
-    	
-        return (true);
+        return;
     }
     
-    // main
-    public static void main(String[] args) {
-    	int i;
-    	
-        Workout squat = new Workout();								//define workout squat
-        for (i=0; i<13; i++) squat.muscles[i] = 0;
-        squat.muscles[2] = 2;
-        squat.muscles[5] = 1;
-        squat.muscles[6] = 1;
-        squat.muscles[7] = 2;
-        
-        Workout deadlift = new Workout();
-        for (i=0; i<13; i++) deadlift.muscles[i] = 0;
-        deadlift.muscles[1] = 2;
-        deadlift.muscles[2] = 1;
-        deadlift.muscles[5] = 2;
-        deadlift.muscles[6] = 1;
-        deadlift.muscles[7] = 1;
-        
-        Workout sleep = new Workout();
-        for (i=0; i<13; i++) sleep.muscles[i] = 0;
-        
-        boolean executed = false;
-        executed = squat.getInfo();
-        if (executed == true) System.out.println("complete\n");
-        executed = false;
-        executed = deadlift.getInfo();
-        if (executed == true) System.out.println("complete\n");
-        executed = false;
-        executed = sleep.getInfo();
-        if (executed == true) System.out.println("complete\n");
+    // method 3: set weight, sets, reps, date
+    public void setPerformance(int nWeight, int nSets, int nReps, int day, int month, int year) {
+    	weight[counter] = nWeight;
+    	reps[counter][0] = nSets;
+    	reps[counter][1] = nReps;
+    	date[counter][0] = day;
+    	date[counter][1] = month;
+    	date[counter][2] = year;
+    	counter = (counter+1) % hist;		//increment counter, reset to 0 if necessary
+    	return;
+    }
+    
+    //method 4: set muscles worked (input is array of length 13)
+    public void initWorkout(int[] nMuscles, String nname) {
+    	int x;
+    	name = nname;
+    	for (x=0;x<13;x++) {
+    		if (nMuscles[x] == 1) muscles[x] = 1;
+    		else if (nMuscles[x] == 2) muscles[x] = 2;
+    		else muscles[x] = 0;
+    	}
+    	return;
     }
 }
